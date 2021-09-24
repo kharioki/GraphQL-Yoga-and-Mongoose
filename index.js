@@ -42,8 +42,18 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    Greeting: () => 'Hello Kharioki!',
-    People: () => People.find(),
+    people: () => People.find(),
+  },
+  Mutation: {
+    createPerson: async (parent, args) => {
+      const newPerson = new People({
+        first: args.first,
+        last: args.last,
+      });
+      const error = await newPerson.save();
+      if (error) return error;
+      return newPerson;
+    },
   },
 };
 
