@@ -9,12 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
 const connection_url = process.env.MONGO_URI;
-
 mongoose.connect(connection_url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
 
 const Schema = mongoose.Schema;
 const peopleSchema = new Schema({
@@ -37,6 +35,7 @@ const typeDefs = `
 
   type Mutation {
     createPerson(first: String!, last: String!): People
+    deletePerson(id: ID!): People
   }
 `;
 
@@ -53,6 +52,14 @@ const resolvers = {
       const error = await newPerson.save();
       if (error) return error;
       return newPerson;
+    },
+    deletePerson: (parent, args) => {
+      return new Promise((resolve, reject) => {
+        People.findByIdAndDelete(args.id, (err, res) => {
+          if (err) reject(err);
+          resolve(res);
+        });
+      })
     },
   },
 };
