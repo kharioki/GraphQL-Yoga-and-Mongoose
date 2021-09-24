@@ -8,7 +8,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
-const connection_url = "mongodb+srv://tony:stark@yoga.a64pc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const connection_url = process.env.MONGO_URI;
 
 mongoose.connect(connection_url, {
   useNewUrlParser: true,
