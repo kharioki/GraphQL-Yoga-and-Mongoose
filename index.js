@@ -3,12 +3,20 @@ const { GraphQLServer } = require('graphql-yoga');
 const typeDefs = `
   type Query {
     Greeting: String!
+    People: [PeopleObject]!
+  }
+
+  type PeopleObject {
+    id: ID
+    first: String!
+    last: String!
   }
 `;
 
 const resolvers = {
   Query: {
     Greeting: () => 'Hello Kharioki!',
+    People: () => [{ first: 'Kharioki', last: 'Tony', id: '1' }],
   },
 };
 
