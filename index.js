@@ -25,34 +25,29 @@ const People = mongoose.model('People', peopleSchema);
 
 const typeDefs = `
   type Query {
-    Greeting: String!
-    People: [PeopleObject]!
+    people: [People!]!
+    person(id: ID!): People
   }
 
-  type PeopleObject {
+  type People {
     id: ID
     first: String!
     last: String!
+  }
+
+  type Mutation {
+    createPerson(first: String!, last: String!): People
   }
 `;
 
 const resolvers = {
   Query: {
     Greeting: () => 'Hello Kharioki!',
-    People: () => [{ first: 'Kharioki', last: 'Tony', id: '1' }],
+    People: () => People.find(),
   },
 };
 
 
 const server = new GraphQLServer({ typeDefs, resolvers });
-
-// server.listen(PORT, () => {
-//   mongoose.set('useFindAndModify', false);
-//   mongoose.connect(process.env.MONGO_URI, { 
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true 
-//   });
-// })
-
 
 server.start({ port: 7777 }, () => console.log('Server is running on localhost:7777'));
